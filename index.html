@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Domain Manager</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Domain Manager</h1>
+
+  <form id="domainForm">
+    <input type="text" id="domain" placeholder="Tên miền (vd: google.com)" required />
+    <input type="text" id="image" placeholder="URL hình ảnh (vd: https://...)" required />
+    <button type="submit">Thêm domain</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Tên miền</th>
+        <th>Hình ảnh</th>
+        <th>Hành động</th>
+      </tr>
+    </thead>
+    <tbody id="domainTableBody"></tbody>
+  </table>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>
