@@ -35,12 +35,14 @@ form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const domain = domainInput.value.trim();
   const image = imageInput.value.trim();
+  const comment = document.getElementById("comment").value.trim();
 
   if (!domain || !image) return;
 
-  await addDoc(domainCollection, { domain, image });
+  await addDoc(domainCollection, { domain, image, comment });
   domainInput.value = "";
   imageInput.value = "";
+  document.getElementById("comment").value = "";
   loadDomains();
 });
 
@@ -55,12 +57,21 @@ async function loadDomains() {
     const row = document.createElement("tr");
 
     row.innerHTML = `
-      <td>${stt++}</td>
-      <td>${data.domain}</td>
-      <td><img src="${data.image}" alt="logo" style="height:30px;" /></td>
-      <td>
+    <td>${stt++}</td>
+    <td><input id="domain-${docSnap.id}" value="${data.domain}" /></td>
+    <td>
+        <input id="image-${docSnap.id}" value="${data.image}" />
+        <br/>
+        <img src="${
+          data.image
+        }" alt="logo" style="height:30px;margin-top:5px;" />
+    </td>
+    <td>
+        <input id="comment-${docSnap.id}" value="${data.comment || ""}" />
+        <br/>
+        <button onclick="updateDomain('${docSnap.id}')">Lưu</button>
         <button onclick="deleteDomain('${docSnap.id}')">Xoá</button>
-      </td>
+    </td>
     `;
 
     tableBody.appendChild(row);
@@ -76,3 +87,30 @@ window.deleteDomain = async (id) => {
 
 // Initial load
 loadDomains();
+
+window.updateComment = async (id) => {
+  const input = document.getElementById(`comment-${id}`);
+  const newComment = input.value.trim();
+
+  const ref = doc(domainCollection, id);
+  await updateDoc(ref, { comment: newComment });
+
+  alert("Đã cập nhật ghi chú!");
+};
+
+window.updateDomain = async (id) => {
+  const domain = document.getElementById(`domain-${id}`).value.trim();
+  const image = document.getElementById(`image-${id}`).value.trim();
+  const comment = document.getElementById(`comment-${id}`).value.trim();
+
+  if (!domain || !image) {
+    alert("Tên miền và hình ảnh không được để trống.");
+    return;
+  }
+
+  const ref = doc(domainCollection, id);
+  await updateDoc(ref, { domain, image, comment });
+
+  alert("Đã cập nhật thành công!");
+  loadDomains();
+};
