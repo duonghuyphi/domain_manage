@@ -1,6 +1,10 @@
 // Firebase SDK (v10+)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
+  query,
+  orderBy,
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
   getFirestore,
   collection,
   addDoc,
@@ -37,7 +41,7 @@ form.addEventListener("submit", async (e) => {
 
   if (!domain) return;
 
-  await addDoc(domainCollection, { domain, comment });
+  await addDoc(domainCollection, { domain, comment, createdAt: new Date() });
   domainInput.value = "";
   document.getElementById("comment").value = "";
   loadDomains();
@@ -45,7 +49,9 @@ form.addEventListener("submit", async (e) => {
 
 // Load and display domains
 async function loadDomains() {
-  const snapshot = await getDocs(domainCollection);
+  const q = query(domainCollection, orderBy("createdAt"));
+  const snapshot = await getDocs(q);
+
   tableBody.innerHTML = "";
   let stt = 1;
 
