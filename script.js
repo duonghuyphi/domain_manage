@@ -61,7 +61,9 @@ async function loadDomains() {
 
     row.innerHTML = `
     <td>${stt++}</td>
-    <td><input id="domain-${docSnap.id}" value="${data.domain}" /></td>
+    <td><input id="domain-${docSnap.id}" value="${data.domain}" /><a href="${
+      data.domain
+    }">${data.domain}</a></td>
     <td>
         <input id="comment-${docSnap.id}" value="${data.comment || ""}" />
     </td>
