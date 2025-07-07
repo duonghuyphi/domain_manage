@@ -57,13 +57,16 @@ async function loadDomains() {
 
   snapshot.forEach((docSnap) => {
     const data = docSnap.data();
+    const safeLink = data.domain.startsWith("http")
+      ? data.domain
+      : `https://${data.domain}`;
     const row = document.createElement("tr");
 
     row.innerHTML = `
     <td>${stt++}</td>
-    <td><input id="domain-${docSnap.id}" value="${data.domain}" /><a href="${
+    <td><input id="domain-${docSnap.id}" value="${
       data.domain
-    }">${data.domain}</a></td>
+    }" /><a href="${safeLink}" target="_blank">${data.domain}</a></td>
     <td>
         <input id="comment-${docSnap.id}" value="${data.comment || ""}" />
     </td>
